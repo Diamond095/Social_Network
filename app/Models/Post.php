@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    
+    protected $guarded = false;
+    protected $with=['image'];
+    public function image(){
+     return $this->hasOne(PostImage::class, 'post_id', 'id')->whereNotNull('post_id');
+    }
 }

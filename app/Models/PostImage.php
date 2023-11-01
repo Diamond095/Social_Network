@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class PostImage extends Model
 {
@@ -11,7 +12,16 @@ class PostImage extends Model
 
     public function getUrlAttribute()
     {
-       return url('storage/'.$this->path);
+        return url('storage/' . $this->path);
     }
-    protected $guarded=false;
+    public static function clearImages()
+    {
+        $images = PostImage::where('user_id', auth()->id())
+               ->whereNull('post_id')->get();
+        foreach ($images as $image) {
+            Storage::disk('public')->delete($image->path);
+            $image->delete();
+        }
+    }
+    protected $guarded = false;
 }

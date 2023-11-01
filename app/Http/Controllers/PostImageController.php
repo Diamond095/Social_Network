@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\PostImage;
 use App\Http\Resources\PostImageResource;
+use PDO;
 
 class PostImageController extends Controller
 {
@@ -20,4 +21,5 @@ class PostImageController extends Controller
         
         return new PostImageResource($image);
     }
+    
 }

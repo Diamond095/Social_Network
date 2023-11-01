@@ -19,11 +19,10 @@ use App\Http\Controllers\PostController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::group(['middleware'=>'auth:sanctum'], function(){
-Route::post('/post', PostController::class);
-Route::get('/get', function(){
-    return 111;
-});
+    Route::post('/post', PostController::class);
+    Route::get('/posts', );
 });
 
 Route::post('/post_image', PostImageController::class);
