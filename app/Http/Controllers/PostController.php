@@ -11,7 +11,11 @@ use App\Http\Resources\PostrResource;
 
 class PostController extends Controller
 {
-    public function __invoke(PostRequest $request)
+    public function getPosts(){
+     $posts=Post::where('user_id', auth()->id())->latest()->get();
+     return PostrResource::collection($posts);
+    }
+    public function store(PostRequest $request)
     {
         try {
             DB::beginTransaction();

@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { getTransitionRawChildren } from 'vue';
+import Post from './Post.vue';
 export default {
   name: "Personal",
 
@@ -56,14 +58,27 @@ export default {
       title: "",
       content: "",
       image: null,
+      posts:[]
     };
   },
-  mounted() {},
-
+   mounted() {
+     this.getPosts()
+  },
+  components:{
+    Post
+  },
   methods: {
     selectFile() {
       this.fileInput = this.$refs.file;
       this.fileInput.click();
+    },
+    getPosts(){
+      axios.get('/api/posts').
+      then(
+        res=>{
+        this.posts=res.data.data
+        }
+      )
     },
     storeImage(e) {
       let file = e.target.files[0];
@@ -86,6 +101,7 @@ export default {
             this.title = "";
             this.content = "";
             this.image_id = "";
+            this.content.unshift(res.data.data);
           });
       });
     },
