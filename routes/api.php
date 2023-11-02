@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GetController;
 use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::post('/post',[PostController::class, 'store']);
-    Route::get('/posts',[PostController::class, 'getPosts'] );
+    Route::get('/posts',[PostController::class, 'getPosts']);
+    Route::get('/users',[UserController::class, 'getUsers']);
 });
 
 Route::post('/post_image', PostImageController::class);

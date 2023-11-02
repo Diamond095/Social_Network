@@ -5,6 +5,7 @@
           <router-link v-if="!token" :to="{ name: 'user.login'}">Login</router-link>
           <router-link v-if="token" :to="{ name: 'user.personal'}">Personal</router-link>
           <router-link v-if="!token" :to="{ name: 'user.registration'}">Registration</router-link>
+          <router-link v-if="token" :to="{ name: 'user.users'}">Users</router-link>
           <a v-if="token" @click.prevent="logout" href="#">Logout</a>
       </div>
       <router-view></router-view>
