@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { getTransitionRawChildren } from 'vue';
 import Post from './Post.vue';
 export default {
   name: "Personal",
@@ -101,7 +100,7 @@ export default {
             this.title = "";
             this.content = "";
             this.image_id = "";
-            this.content.unshift(res.data.data);
+            this.posts.unshift(res.data.data);
           });
       });
     },

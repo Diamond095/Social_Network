@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\PostImage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PostrResource;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -45,5 +46,8 @@ class PostController extends Controller
                 'post_id' => $post->id
             ]);
         }
+    }
+    public function showPostOfUser(User $user){
+        return PostrResource::collection($user->posts);
     }
 }
