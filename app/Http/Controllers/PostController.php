@@ -47,7 +47,5 @@ class PostController extends Controller
             ]);
         }
     }
-    public function showPostOfUser(User $user){
-        return PostrResource::collection($user->posts);
-    }
+   
 }

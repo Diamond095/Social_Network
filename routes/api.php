@@ -26,7 +26,8 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::post('/post',[PostController::class, 'store']);
     Route::get('/posts',[PostController::class, 'getPosts']);
     Route::get('/users',[UserController::class, 'getUsers']);
-    Route::get('/user/{user}/posts',[PostController::class, 'showPostOfUser']);
+    Route::get('/user/{user}/posts',[UserController::class, 'showPostOfUser']);
+    Route::get('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
 });
 
 Route::post('/post_image', PostImageController::class);
