@@ -23,6 +23,10 @@ const router = createRouter({
             path: '/users/index/:id', component: () => import('../views/Show.vue'),
             name: 'user.show'
         },
+        {
+            path: '/users/feed', component: () => import('../views/user/Feed.vue'),
+            name: 'user.feed'
+        },
 
     ]
 })

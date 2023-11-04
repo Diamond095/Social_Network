@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\PostrResource;
 use App\Models\SubscriberFollowing;
+use App\Models\Post;
 
 class UserController extends Controller
 {
@@ -37,5 +38,10 @@ class UserController extends Controller
        $data['is_following']=count($res['attached'])>0 ? true : false;
        return $data;
       
+    }
+    public function feed(){
+    $followings=User::find(auth()->id())->followings->pluck('id')->toArray();
+    $posts=Post::whereIn('user_id', $followings)->get();
+    return PostrResource::collection($posts);
     }
 }
