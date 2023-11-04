@@ -16,10 +16,12 @@ class PostrResource extends JsonResource
     {
         $url=isset($this->image) ? $this->image->url : null;
         return [
+            'id'=>$this->id,
             'title'=>$this->title,
             'content'=>$this->content,
             'image_url'=>$url,
-            'date'=>$this->date
+            'date'=>$this->date,
+            'is_liked'=>$this->is_liked
         ];
     }
 }

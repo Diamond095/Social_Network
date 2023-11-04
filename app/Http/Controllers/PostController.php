@@ -8,13 +8,24 @@ use App\Models\Post;
 use App\Models\PostImage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PostrResource;
+use App\Models\LikedPost;
 use App\Models\User;
 
 class PostController extends Controller
 {
-    public function getPosts(){
-     $posts=Post::where('user_id', auth()->id())->latest()->get();
-     return PostrResource::collection($posts);
+    public function getPosts()
+    {
+        $posts = Post::where('user_id', auth()->id())->latest()->get();
+        $liked = LikedPost::where('user_id', auth()->id())
+            ->get('post_id')
+            ->pluck('post_id')
+            ->toArray();
+        foreach ($posts as $post) {
+            if (in_array($post->id, $liked)) {
+                $post->is_liked = true;
+            }
+        }
+        return PostrResource::collection($posts);
     }
     public function store(PostRequest $request)
     {
@@ -29,9 +40,7 @@ class PostController extends Controller
             $this->proccessImage($post, $imageId);
             PostImage::clearImages();
             DB::commit();
-        }
-         catch (\Exception $exception)
-          {
+        } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json(['error' => $exception->getMessage()]);
         }
@@ -47,5 +56,11 @@ class PostController extends Controller
             ]);
         }
     }
-   
+    public function toggleLike(Post $post)
+    {
+
+        $liked = User::find(auth()->id())->liked()->toggle($post->id);
+        $data['is_liked'] = count($liked['attached'])>0 ? true : false;
+        return $data;
+    }
 }
