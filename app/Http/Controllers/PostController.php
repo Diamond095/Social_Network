@@ -60,7 +60,8 @@ class PostController extends Controller
     {
 
         $liked = User::find(auth()->id())->liked()->toggle($post->id);
-        $data['is_liked'] = count($liked['attached'])>0 ? true : false;
+        $data['is_liked'] = count($liked['attached']) > 0 ? true : false;
+        $data['likes_count']=$post->likedUsers->count();
         return $data;
     }
 }
