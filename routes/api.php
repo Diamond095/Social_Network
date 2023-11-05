@@ -6,6 +6,7 @@ use App\Http\Controllers\GetController;
 use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use PHPUnit\Framework\Attributes\PostCondition;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::get('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
     Route::get('/feed', [UserController::class, 'feed']);
     Route::get('/post/{post}/toggle_like', [PostController::class, 'toggleLike']);
+    Route::post('/post/{post}/repost', [PostController::class, 'repost']);
+    Route::post('/post_image', PostImageController::class);
 });
 
-Route::post('/post_image', PostImageController::class);

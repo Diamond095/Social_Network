@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\RepostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\PostImage;
@@ -63,5 +64,12 @@ class PostController extends Controller
         $data['is_liked'] = count($liked['attached']) > 0 ? true : false;
         $data['likes_count']=$post->likedUsers->count();
         return $data;
+    }
+    public function repost(RepostRequest $request,Post $post){
+        $data=$request->validated();
+        $data['user_id']=auth()->id();
+        $data['reposted_id']=$post->id;
+        Post::create($data);
+
     }
 }

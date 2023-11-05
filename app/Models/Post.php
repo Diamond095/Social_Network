@@ -22,5 +22,10 @@ class Post extends Model
      public function likedUsers(){
       return $this->belongsToMany(User::class,'liked_posts', 'post_id', 'user_id');
      }
-    
+    public function reposted(){
+      return $this->belongsTo(Post::class, 'reposted_id', 'id');
+    }
+    public function comments(){
+      return $this->belongsTo(Comment::class, 'posr_id', 'id');
+    }
 }
