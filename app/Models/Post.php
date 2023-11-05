@@ -26,6 +26,6 @@ class Post extends Model
       return $this->belongsTo(Post::class, 'reposted_id', 'id');
     }
     public function comments(){
-      return $this->belongsTo(Comment::class, 'posr_id', 'id');
+      return $this->hasMany(Comment::class, 'posr_id', 'id');
     }
 }

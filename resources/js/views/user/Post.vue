@@ -68,8 +68,6 @@
   </div>
 </template>
 <script>
-
-
 export default {
   name: "Post",
   props: ["post"],
@@ -78,6 +76,7 @@ export default {
       is_repost: false,
       title:'',
       content:'',
+      body:'',
       repostedId:null
     };
   },
@@ -104,6 +103,14 @@ export default {
       this.content=''
     }
   )
+    },
+    storeComment(post){
+      axios.post(`/api/post/${post.id}/comment`,{
+       'body':this.body
+      }).
+      then(
+      this.body=''
+      );
     }
   },
 };
