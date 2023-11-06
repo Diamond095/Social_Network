@@ -34,5 +34,6 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::post('/post/{post}/repost', [PostController::class, 'repost']);
     Route::post('/post_image', PostImageController::class);
     Route::post('/post/{post}/comment', [PostController::class, 'comment']);
+    Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
 });
 
