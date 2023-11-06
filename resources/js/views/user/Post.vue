@@ -120,13 +120,12 @@
       <div v-if="comments && isShowed">
         <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
           <div class="flex mb-2">
-            <p class="text-sm mr-2">{{ comment.user.name }}</p>
+            <router-link :to="{name: 'user.show', params: {id: comment.user.id}}" class="text-sm mr-2">{{ comment.user.name }}</router-link>
             <p @click.prevent="setParentId(comment)" class="text-sm text-sky-500 cursor-pointer">
               Ответить
             </p>
           </div>
-          <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: comment.answered_for_user.id}} ">{{ comment.answered_for_user.name }}</router-link>
-          <p>{{ comment.body }}</p>
+          <p><span v-if="comment.answered_for_user" class="text-sky-400"><router-link :to="{name: 'user.show', params: {id: comment.answered_for_user.id}} ">{{ comment.answered_for_user.name }},</router-link></span> {{ comment.body }}</p>
           <p class="mt-2 text-right text-sm">{{ comment.date }}</p>
         </div>
       </div>
@@ -196,7 +195,7 @@ export default {
   },
   methods: {
     toggleLike(post) {
-      axios.get(`/api/post/${post.id}/toggle_like`).then((res) => {
+      axios.post(`/api/post/${post.id}/toggle_like`).then((res) => {
         post.is_liked = res.data.is_liked;
         post.likes_count = res.data.likes_count;
       });

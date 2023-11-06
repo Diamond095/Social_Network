@@ -1,5 +1,6 @@
 <template>
   <div class="w-96 mx-auto">
+<Stat :stats="stats"></Stat>
     <div class="mb-4">
       <div class="mb-3">
         <input
@@ -63,6 +64,7 @@
 
 <script>
 import Post from "./Post.vue";
+import Stat from "./Stat.vue";
 export default {
   name: "Personal",
 
@@ -73,13 +75,16 @@ export default {
       image: null,
       posts: [],
       errors: [],
+      stats:[]
     };
   },
   mounted() {
     this.getPosts();
+    this.getStats();
   },
   components: {
     Post,
+    Stat
   },
   methods: {
     selectFile() {
@@ -120,6 +125,12 @@ export default {
           });
       });
     },
+    getStats() {
+            axios.post('/api/user/stats', { user_id: null})
+            .then( res => {
+                this.stats = res.data.data
+            })
+        },
   },
 };
 </script>

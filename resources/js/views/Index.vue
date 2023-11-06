@@ -46,7 +46,7 @@ export default {
       });
     },
     toggleFollowing(user) {
-        axios.get(`/api/user/${user.id}/toggle_following`).then(res => {
+        axios.post(`/api/user/${user.id}/toggle_following`).then(res => {
             user.is_following=res.data.is_following;  
       });
     },

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
-use App\Http\Requests\CommentRequset;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\RepostRequest;
 use App\Http\Resources\CommentResource;
-use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\PostImage;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +82,10 @@ class PostController extends Controller
         $comment = Comment::create($data);
         return new CommentResource($comment);
     }
-    public function getComments(Post $post){
-     return CommentResource::collection($post->comments);
+
+    public function getComments(Post $post)
+    {
+        return CommentResource::collection($post->comments);
     }
+    
 }

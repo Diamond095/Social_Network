@@ -9,6 +9,7 @@ use App\Http\Resources\PostrResource;
 use App\Models\LikedPost;
 use App\Models\SubscriberFollowing;
 use App\Models\Post;
+use App\Http\Requests\StatRequest;
 
 class UserController extends Controller
 {
@@ -74,5 +75,18 @@ class UserController extends Controller
             }
         }
         return PostrResource::collection($posts);
+    }
+    public function stat(StatRequest $request)
+    {
+        $data = $request->validated();
+        $userId= isset($data['user_id']) ? $data['user_id'] : auth()->id();
+
+        $result=[];
+        $result['subscribers_count']=SubscriberFollowing::where('following_id', $userId)->count();
+        $result['followings_count']=SubscriberFollowing::where('subscriber_id', $userId)->count();
+        $postIds = Post::where('user_id', $userId)->get('id')->pluck('id')->toArray();
+        $result['likes_count'] = LikedPost::whereIn('post_id', $postIds)->count();
+        $result['posts_count'] = count($postIds);
+        return response()->json(['data' => $result]);
     }
 }

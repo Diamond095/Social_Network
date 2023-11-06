@@ -24,16 +24,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware'=>'auth:sanctum'], function(){
+    Route::post('/post_image', PostImageController::class);
+
     Route::post('/post',[PostController::class, 'store']);
     Route::get('/posts',[PostController::class, 'getPosts']);
-    Route::get('/users',[UserController::class, 'getUsers']);
-    Route::get('/user/{user}/posts',[UserController::class, 'showPostOfUser']);
-    Route::get('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
-    Route::get('/feed', [UserController::class, 'feed']);
-    Route::get('/post/{post}/toggle_like', [PostController::class, 'toggleLike']);
+    Route::post('/post/{post}/toggle_like', [PostController::class, 'toggleLike']);
     Route::post('/post/{post}/repost', [PostController::class, 'repost']);
-    Route::post('/post_image', PostImageController::class);
     Route::post('/post/{post}/comment', [PostController::class, 'comment']);
     Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
+    
+    Route::get('/feed', [UserController::class, 'feed']);
+    Route::post('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
+    Route::get('/users',[UserController::class, 'getUsers']);
+    Route::get('/user/{user}/posts',[UserController::class, 'showPostOfUser']);
+    Route::post('/user/stats',[UserController::class, 'stat']);
 });
 
