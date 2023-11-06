@@ -8,9 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-
+    protected $guarded=false;
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    protected $guarded=false;
+
+    public function getDateAttribute()
+    {
+       return $this->created_at->diffForHumans();
+    }
+
+    public function parent(){
+        return $this->belongsTo(Comment::class, 'parent_id', 'id');
+    }
 }

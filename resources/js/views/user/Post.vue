@@ -1,7 +1,11 @@
 <template>
   <div class="mb-8 pb-8 border-b border-gray-400">
     <h1 class="text-xl">{{ post.title }}</h1>
-    <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.user.id}} ">{{ post.user.name }}</router-link>
+    <router-link
+      class="text-sm text-gray-800"
+      :to="{ name: 'user.show', params: { id: post.user.id } }"
+      >{{ post.user.name }}</router-link
+    >
     <img
       class="my-3 mx-auto"
       v-if="post.image_url"
@@ -12,8 +16,12 @@
 
     <div v-if="post.reposted_post" class="bg-gray-100 p-4 my-4 border border-gray-200">
       <h1 class="text-xl">{{ post.reposted_post.title }}</h1>
-     
-      <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link>
+
+      <router-link
+        class="text-sm text-gray-800"
+        :to="{ name: 'user.show', params: { id: post.reposted_post.user.id } }"
+        >{{ post.reposted_post.user.name }}</router-link
+      >
       <img
         class="my-3 mx-auto"
         v-if="post.reposted_post.image_url"
@@ -73,7 +81,7 @@
           v-model="title"
           class="w-96 mb-3 rounded-3xl border p-2 border-slate-300"
           type="text"
-          placeholder="title"
+          placeholder="заголовок"
         />
       </div>
       <div v-if="errors.title">
@@ -85,7 +93,8 @@
         <textarea
           v-model="content"
           class="w-96 mb-3 rounded-3xl border p-2 border-slate-300"
-          placeholder="content"></textarea>
+          placeholder="текст поста"
+        ></textarea>
       </div>
       <div v-if="errors.content">
         <p v-for="error in errors.content" class="text-sm mb-2 text-red-500">
@@ -96,8 +105,8 @@
         <a
           @click.prevent="repost(post)"
           href="#"
-          class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 box-border ml-auto"
-          >Publish</a
+          class="block p-2 w-24 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 box-border ml-auto"
+          >Репост</a
         >
       </div>
     </div>
@@ -105,33 +114,58 @@
       <p class="cursor-pointer" v-if="!isShowed" @click="getComments(post)">
         Показать коментарии
       </p>
-      <p class="cursor-pointer" v-if="isShowed" @click="isShowed = false">Close comments</p>
+      <p class="cursor-pointer" v-if="isShowed" @click="isShowed = false">
+        Скрыть комментарии
+      </p>
       <div v-if="comments && isShowed">
         <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
           <div class="flex mb-2">
             <p class="text-sm mr-2">{{ comment.user.name }}</p>
-            <p @click="setParentId(comment)" class="text-sm text-sky-500 cursor-pointer">
-              Answer
+            <p @click.prevent="setParentId(comment)" class="text-sm text-sky-500 cursor-pointer">
+              Ответить
             </p>
           </div>
-          <p>
-            <span v-if="comment.answered_for_user" class="text-sky-400"
-              >{{ comment.answered_for_user }},</span
-            >
-            {{ comment.body }}
-          </p>
+          <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: comment.answered_for_user.id}} ">{{ comment.answered_for_user.name }}</router-link>
+          <p>{{ comment.body }}</p>
           <p class="mt-2 text-right text-sm">{{ comment.date }}</p>
         </div>
       </div>
     </div>
     <div class="mt-4">
       <div class="mb-3">
-        <input
+        <div class="flex items-center">
+          <p v-if="comment" class="mr-2">Ответ пользователю {{ comment.user.name }}</p>
+          <p
+            v-if="comment"
+            @click="comment = null"
+            class="cursor-pointer text-sky-400 text-sm"
+          >
+            Отмена
+          </p>
+        </div>
+      </div>
+      <div class="flex mb-3">
+        <textarea
           v-model="body"
-          class="w-96 rounded-3xl border p-2 border-slate-300"
+          class="w-88 rounded-3xl border p-2 border-slate-300"
           type="text"
-          placeholder="Your comment here..."
+          placeholder="Добавить комментарий"
         />
+        <svg
+          @click.prevent="storeComment(post)"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 mt-2 ml-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+          />
+        </svg>
       </div>
       <div>
         <div v-if="errors.body">
@@ -139,12 +173,6 @@
             {{ error }}
           </p>
         </div>
-        <a
-          @click.prevent="storeComment(post)"
-          href="#"
-          class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 box-border ml-auto"
-          >Comment</a
-        >
       </div>
     </div>
   </div>
@@ -161,8 +189,9 @@ export default {
       body: "",
       repostedId: null,
       errors: [],
-      comments:[],
-      isShowed:false
+      comments: [],
+      isShowed: false,
+      comment: null,
     };
   },
   methods: {
@@ -191,26 +220,36 @@ export default {
           this.errors = e.response.data.errors;
         });
     },
+    setParentId(comment){
+            this.comment = comment
+        },
     storeComment(post) {
+      console.log(this.comment)
+      const commentId = this.comment ? this.comment.id : null;
       axios
         .post(`/api/post/${post.id}/comment`, {
           body: this.body,
+          parent_id: commentId
         })
         .then((res) => {
           this.body = "";
           this.errors = [];
+          this.comments.unshift(res.data.data);
+          this.parentId = null;
+          post.comments_count++;
+          this.comment=null;
         })
         .catch((e) => {
           this.errors = e.response.data.errors;
         });
     },
-      getComments(post) {
-            axios.get(`/api/post/${post.id}/comments`)
-                .then(res => {
-                    this.comments = res.data.data
-                    this.isShowed = true
-                })
-        },
+    getComments(post) {
+      axios.get(`/api/post/${post.id}/comments`).then((res) => {
+        this.comments = res.data.data;
+        this.isShowed = true;
+      });
+    },
+    
   },
 };
 </script>
