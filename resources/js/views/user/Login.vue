@@ -1,14 +1,14 @@
 <template>
     <div class="w-96 mx-auto">
         <div>
-            <input v-model="email" type="email" placeholder="email" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+            <input v-model="email" type="email" placeholder="электронная почта" class="w-96 p-1 mb-2 border border-inherit rounded-lg">
         </div>
         <div>
-            <input v-model="password" type="password" placeholder="password"
+            <input v-model="password" type="password" placeholder="пароль"
                 class="w-96 p-1 mb-2 border border-inherit rounded-lg">
         </div>
         <div>
-            <input @click.prevent="login" type="submit" value="login"
+            <input @click.prevent="login" type="submit" value="войти"
                 class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
         </div>
     </div>

@@ -20,7 +20,7 @@ class PostController extends Controller
 {
     public function getPosts()
     {
-        $posts = Post::where('user_id', auth()->id())->latest()->get();
+        $posts = Post::where('user_id', auth()->id())->withCount('reposts')->latest()->get();
         $liked = LikedPost::where('user_id', auth()->id())
             ->get('post_id')
             ->pluck('post_id')

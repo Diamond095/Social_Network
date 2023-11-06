@@ -3,19 +3,19 @@
         <div class="w-96 mx-auto">
 
             <div>
-                <input v-model="name" type="name" placeholder="name"
+                <input v-model="name" type="name" placeholder="имя"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
             <div>
-                <input v-model="email" type="email" placeholder="email"
+                <input v-model="email" type="email" placeholder="электронная почта"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
             <div>
-                <input v-model="password" type="password" placeholder="password"
+                <input v-model="password" type="password" placeholder="пароль"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
             <div>
-                <input v-model="password_confirmation" type="password" placeholder="password_confirmation"
+                <input v-model="password_confirmation" type="password" placeholder="подтверждение пароля"
                        class="w-96 p-1 mb-2 border border-inherit rounded-lg">
             </div>
             <input @click.prevent="register" type="submit" value="register"

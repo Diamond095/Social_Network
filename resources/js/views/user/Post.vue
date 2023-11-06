@@ -1,6 +1,7 @@
 <template>
   <div class="mb-8 pb-8 border-b border-gray-400">
     <h1 class="text-xl">{{ post.title }}</h1>
+    <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.user.id}} ">{{ post.user.name }}</router-link>
     <img
       class="my-3 mx-auto"
       v-if="post.image_url"
@@ -11,6 +12,8 @@
 
     <div v-if="post.reposted_post" class="bg-gray-100 p-4 my-4 border border-gray-200">
       <h1 class="text-xl">{{ post.reposted_post.title }}</h1>
+     
+      <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link>
       <img
         class="my-3 mx-auto"
         v-if="post.reposted_post.image_url"
@@ -58,7 +61,7 @@
               d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
             />
           </svg>
-          <p>{{ post.reposted_by_posts_count }}</p>
+          <p>{{ post.reposts_count }}</p>
         </div>
       </div>
       <p class="text-right text-slate-500 text-sm">{{ post.date }}</p>
@@ -100,7 +103,7 @@
     </div>
     <div v-if="post.comments_count > 0" class="mt-4">
       <p class="cursor-pointer" v-if="!isShowed" @click="getComments(post)">
-        Show {{ post.comments_count }} comments
+        Показать коментарии
       </p>
       <p class="cursor-pointer" v-if="isShowed" @click="isShowed = false">Close comments</p>
       <div v-if="comments && isShowed">

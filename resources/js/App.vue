@@ -1,13 +1,13 @@
 <template>
   <div>
-      <div class="flex justify-between p-8 w-96 mx-auto">
+      <div class="flex justify-between pb-4 pt-4 w-96 mx-auto">
 
-          <router-link v-if="!token" :to="{ name: 'user.login'}">Login</router-link>
-          <router-link v-if="token" :to="{ name: 'user.personal'}">Personal</router-link>
-          <router-link v-if="!token" :to="{ name: 'user.registration'}">Registration</router-link>
-          <router-link v-if="token" :to="{ name: 'user.users'}">Users</router-link>
-          <router-link v-if="token" :to="{ name: 'user.feed'}">Feed</router-link>
-          <a v-if="token" @click.prevent="logout" href="#">Logout</a>
+          <router-link v-if="!token" :to="{ name: 'user.login'}">Войти</router-link>
+          <router-link v-if="token" :to="{ name: 'user.personal'}">Твоя страница</router-link>
+          <router-link v-if="!token" :to="{ name: 'user.registration'}">Регистрация</router-link>
+          <router-link v-if="token" :to="{ name: 'user.users'}">Пользователи</router-link>
+          <router-link v-if="token" :to="{ name: 'user.feed'}">Новости</router-link>
+          <a v-if="token" @click.prevent="logout" href="#">Выйти</a>
       </div>
       <router-view></router-view>
   </div>
@@ -50,5 +50,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function showPostOfUser(User $user)
     {
-        $posts = $user->posts()->latest()->get();
+        $posts = $user->posts()->withCount('reposts')->latest()->get();
         $postsId = [];
         foreach ($posts as $post) {
             $postsId[] = $post->id;
@@ -65,6 +65,7 @@ class UserController extends Controller
             ->toArray();
         $posts = Post::whereIn('user_id', $followings)
             ->whereNotIn('id', $likedPosts)
+            ->withCount('reposts')
             ->latest()
             ->get();
         foreach ($posts as $post) {

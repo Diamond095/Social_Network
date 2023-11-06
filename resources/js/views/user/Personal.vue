@@ -6,7 +6,7 @@
           v-model="title"
           class="w-96 rounded-3xl border p-2 border-slate-300"
           type="text"
-          placeholder="title"
+          placeholder="заголовок"
         />
       </div>
       <div v-if="errors.title">
@@ -19,7 +19,7 @@
         <textarea
           v-model="content"
           class="w-96 rounded-3xl border p-2 border-slate-300"
-          placeholder="content"
+          placeholder="текст поста"
         ></textarea>
       </div>
       <div v-if="errors.content">
@@ -33,13 +33,13 @@
           <input @change="storeImage" ref="file" type="file" class="hidden" />
           <a
             href="#"
-            class="block p-2 w-16 text-center text-sm rounded-3xl bg-sky-500 text-white"
+            class="block p-2 w-32 text-center text-sm rounded-3xl bg-sky-500 text-white"
             @click.prevent="selectFile()"
-            >Image</a
+            >Изображение</a
           >
         </div>
         <div v-if="image">
-          <a href="#" class="ml-3" @click.prevent="image = null">Cancel</a>
+          <a href="#" class="ml-3" @click.prevent="image = null">Отмена</a>
         </div>
       </div>
       <div v-if="image">
@@ -50,12 +50,12 @@
           href="#"
           @click="createNewPost"
           class="block p-2 w-32 text-center rounded-3xl bg-green-600 text-white hover:bg-white hover:border hover:border-green-600 hover:text-green-600 box-border ml-auto"
-          >Publish</a
+          >Опубликовать</a
         >
       </div>
     </div>
     <div v-if="posts">
-      <h1 class="mb-8 pb-8 border-b border-gray-400">Posts</h1>
+      <h1 class="mb-8 pb-8 border-b border-gray-400">Твои публикации</h1>
       <Post v-for="post in posts" :post="post"></Post>
     </div>
   </div>
