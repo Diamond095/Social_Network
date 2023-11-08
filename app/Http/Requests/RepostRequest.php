@@ -26,4 +26,13 @@ class RepostRequest extends FormRequest
             'content'=>'required|string',
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Заголовок не должен быть пустым',
+            'content.required' => 'Текст поста не должен быть пустым',
+            'title.string' => 'Заголовок не должен быть текстом',
+            'content.string' => 'Текст поста не должен быть текстом',
+        ];
+    }
 }

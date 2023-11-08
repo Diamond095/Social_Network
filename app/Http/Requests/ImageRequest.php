@@ -25,4 +25,11 @@ class ImageRequest extends FormRequest
             'image'=>'required|file'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'image.required' => 'Изображение должно быть обязательным',
+            'image.file' => 'Изображение должно быть являться файлом',
+        ];
+    }
 }

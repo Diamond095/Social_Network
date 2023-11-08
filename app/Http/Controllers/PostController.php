@@ -61,15 +61,14 @@ class PostController extends Controller
     }
     public function toggleLike(Post $post)
     {
-
         $liked = User::find(auth()->id())->liked()->toggle($post->id);
         $data['is_liked'] = count($liked['attached']) > 0 ? true : false;
-        $data['likes_count'] = $post->likedUsers->count();
+        $data['likes_count'] = LikedPost::where('post_id', $post->id)->count();
         return $data;
     }
     public function repost(RepostRequest $request, Post $post)
     {
-        $data = $request->validated();
+      //  $data = $request->validated();
         $data['user_id'] = auth()->id();
         $data['reposted_id'] = $post->id;
         Post::create($data);

@@ -1,6 +1,6 @@
 <template>
   <div class="w-96 mx-auto">
-    <Stat :stats="stats"></Stat>
+    <Stat :userId="userId" :stats="stats"></Stat>
     <div v-if="posts">
       <h1 class="mb-8 pb-8 border-b border-gray-400">Публикации</h1>
       <Post v-for="post in posts" :post="post"></Post>

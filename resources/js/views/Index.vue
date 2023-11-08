@@ -13,9 +13,7 @@
             },
           }"
         >
-          <p>{{ user.id }}</p>
           <p>{{ user.name }}</p>
-          <p>{{ user.email }}</p>
         </router-link>
         <div>
             <a @click.prevent="toggleFollowing(user)"
@@ -43,7 +41,12 @@ export default {
     getUsers() {
       axios.get("/api/users").then((res) => {
         this.users = res.data.data;
-      });
+      })
+      .catch(e=>{
+        if(e.reaponse.status==401){
+          localStorage.removeItem('x_xsrf_token');
+        }
+      });;
     },
     toggleFollowing(user) {
         axios.post(`/api/user/${user.id}/toggle_following`).then(res => {

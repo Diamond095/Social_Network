@@ -24,6 +24,9 @@ class UserController extends Controller
             if (in_array($user->id, $followings)) {
                 $user->is_following = true;
             }
+            else{
+                $user->is_following=false;
+            }
         }
 
         return UserResource::collection($users);
@@ -54,7 +57,6 @@ class UserController extends Controller
         $authUser = User::find(auth()->id());
         $res = $authUser->followings()->toggle($user->id);
         $data['is_following'] = count($res['attached']) > 0 ? true : false;
-
         return $data;
     }
     public function feed()
@@ -88,5 +90,70 @@ class UserController extends Controller
         $result['likes_count'] = LikedPost::whereIn('post_id', $postIds)->count();
         $result['posts_count'] = count($postIds);
         return response()->json(['data' => $result]);
+    }
+
+    public function getFollowings(StatRequest $request){
+        $data = $request->validated();
+        $userId= isset($data['user_id']) ? $data['user_id'] : auth()->id();
+        $users=SubscriberFollowing::where('subscriber_id', $userId)->get();
+        $followings = SubscriberFollowing::where('subscriber_id', auth()->id())
+        ->get('following_id')
+        ->pluck('following_id')
+        ->toArray();
+
+        for($i=0; $i<$users->count(); $i++){
+            $users[$i]=$users[$i]->following;
+        }
+        if($userId==auth()->id()){
+            foreach ($users as $user) {   
+                 $user->is_following = true;
+            }
+        } else{
+            $followings = SubscriberFollowing::where('subscriber_id', auth()->id())
+            ->get('following_id')
+            ->pluck('following_id')
+            ->toArray();
+            foreach ($users as $user) {
+                if($user->id!=auth()->id()){
+                if (in_array($user->id, $followings)) {
+                    $user->is_following = true;
+                }
+                else{
+                    $user->is_following=false;
+                }
+            }
+        }
+        }
+        return UserResource::collection($users);
+    }
+    public function getSubscribers(StatRequest $request){
+        $data = $request->validated();
+        $userId= isset($data['user_id']) ? $data['user_id'] : auth()->id();
+       
+        $users=SubscriberFollowing::where('following_id', $userId)->get();
+
+        $followings = SubscriberFollowing::where('subscriber_id', auth()->id())
+        ->get('following_id')
+        ->pluck('following_id')
+        ->toArray();
+        for($i=0; $i<$users->count(); $i++){
+            $users[$i]=$users[$i]->subscriber;
+        }
+        foreach ($users as $user) {
+            if($user->id!=auth()->id()){
+            if (in_array($user->id, $followings)) {
+                $user->is_following = true;
+            }
+            else{
+                $user->is_following=false;
+            }
+        }
+        }
+        return UserResource::collection($users);
+    }
+    public function getUserId(){
+        $result=[];
+        $result['id']= auth()->id();
+        return  response()->json(['data' => $result]);
     }
 }

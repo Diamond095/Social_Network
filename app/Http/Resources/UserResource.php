@@ -17,8 +17,7 @@ class UserResource extends JsonResource
         return[
          'id'=>$this->id,
          'name'=>$this->name,
-         'email'=>$this->email,
-         'is_following'=>$this->is_following ?? false
+         'is_following'=>$this->is_following 
         ];
     }
 }

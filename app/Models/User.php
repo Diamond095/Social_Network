@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Post;
+use App\Models\SubscriberFollowing;
 
 class User extends Authenticatable
 {
@@ -51,9 +52,18 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'subscriber_followings', 'subscriber_id', 'following_id');
     }
-    public function liked()
-    {
-        return $this->belongsToMany(Post::class, 'liked_posts', 'user_id', 'post_id');
-    }
+ public function liked()
+   {
+       return $this->belongsToMany(Post::class, 'liked_posts', 'user_id', 'post_id');
+   }
+   // public function followings(){
+
+   //     return $this->hasMany(SubscriberFollowing::class, 'following_id', 'id');
+    // }
+     public function subscribs(){
+return $this->hasMany(SubscriberFollowing::class, 'subscriber_id', 'id');
+     }
+     
+
 }
 

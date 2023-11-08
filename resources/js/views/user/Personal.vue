@@ -1,6 +1,6 @@
 <template>
   <div class="w-96 mx-auto">
-<Stat :stats="stats"></Stat>
+    <Stat :userId="userId" :stats="stats"></Stat>
     <div class="mb-4">
       <div class="mb-3">
         <input
@@ -28,7 +28,7 @@
           {{ error }}
         </p>
       </div>
-      
+
       <div class="flex mb-3 items-center items-center">
         <div>
           <input @change="storeImage" ref="file" type="file" class="hidden" />
@@ -39,9 +39,15 @@
             >Изображение</a
           >
         </div>
+
         <div v-if="image">
           <a href="#" class="ml-3" @click.prevent="image = null">Отмена</a>
         </div>
+      </div>
+      <div v-if="errors.image">
+        <p v-for="error in errors.image" class="text-sm mb-2 text-red-500">
+          {{ error }}
+        </p>
       </div>
       <div v-if="image">
         <img :src="image.url" alt="post-picture" />
@@ -65,6 +71,9 @@
 <script>
 import Post from "./Post.vue";
 import Stat from "./Stat.vue";
+import { useFetch } from '@vueuse/core'
+
+
 export default {
   name: "Personal",
 
@@ -75,16 +84,26 @@ export default {
       image: null,
       posts: [],
       errors: [],
-      stats:[]
+      stats: [],
+      userId: null,
     };
   },
-  mounted() {
+  async mounted() {
     this.getPosts();
     this.getStats();
   },
   components: {
     Post,
-    Stat
+    Stat,
+  },
+
+  async setup() {
+  
+      const {userId} = await useFetch('/api/user/id')
+      return {
+      userId,
+    }
+
   },
   methods: {
     selectFile() {
@@ -92,20 +111,33 @@ export default {
       this.fileInput.click();
     },
     getPosts() {
-      axios.get("/api/posts").then((res) => {
-        this.posts = res.data.data;
-      });
+      axios
+        .get("/api/posts")
+        .then((res) => {
+          this.posts = res.data.data;
+        })
+        .catch((e) => {
+          if (e.response.status == 401) {
+            localStorage.removeItem("x_xsrf_token");
+          }
+        });
     },
     storeImage(e) {
       let file = e.target.files[0];
       let formData = new FormData();
+      if (!file.type.startsWith("image")) {
+        this.errors.image = [];
+        this.errors.image.push("Выбранный файл должен быть изображением");
+        return;
+      }
       formData.append("image", file);
       axios.post("/api/post_image", formData).then((res) => {
         this.image = res.data.data;
+        this.errors.image = null;
       });
     },
     createNewPost() {
-      const id = this.image ? this.image.id : null
+      const id = this.image ? this.image.id : null;
       axios.get("/sanctum/csrf-cookie").then((res) => {
         axios
           .post("/api/post", {
@@ -118,21 +150,21 @@ export default {
             this.content = "";
             this.image = null;
             this.posts.unshift(res.data.data);
+            this.errors = [];
           })
           .catch((e) => {
-            
-           this.errors=e.response.data.errors;
+            this.errors = e.response.data.errors;
           });
       });
     },
     getStats() {
-            axios.post('/api/user/stats', { user_id: null})
-            .then( res => {
-                this.stats = res.data.data
-            })
-        },
+      axios.post("/api/user/stats", { user_id: null }).then((res) => {
+        this.stats = res.data.data;
+      });
+    },
   },
 };
+
 </script>
 
 <style scoped></style>

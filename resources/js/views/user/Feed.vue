@@ -26,7 +26,12 @@
       getPosts() {
         axios.get(`/api/feed`).then((res) => {
           this.posts = res.data.data;
-        });
+        })
+        .catch(e=>{
+        if(e.response.status==401){
+          localStorage.removeItem('x_xsrf_token');
+        }
+      });;
       }
     },
   };

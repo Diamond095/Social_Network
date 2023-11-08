@@ -12,7 +12,7 @@ const router = createRouter({
             name: 'user.registration'
         },
         {
-          path: '/users/personal', component: () => import('../views/user/Personal.vue'),
+            path: '/users/personal', component: () => import('../views/user/Personal.vue'),
             name: 'user.personal'
         },
         {
@@ -26,6 +26,14 @@ const router = createRouter({
         {
             path: '/users/feed', component: () => import('../views/user/Feed.vue'),
             name: 'user.feed'
+        },
+        {
+            path: '/users/stats/subscribers/:id', component: () => import('../views/user/Subscribers.vue'),
+            name: 'user.subscribers'
+        },
+        {
+            path: '/users/stats/followings/:id', component: () => import('../views/user/Followings.vue'),
+            name: 'user.followings'
         },
 
     ]

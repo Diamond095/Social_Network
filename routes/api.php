@@ -38,5 +38,8 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::get('/users',[UserController::class, 'getUsers']);
     Route::get('/user/{user}/posts',[UserController::class, 'showPostOfUser']);
     Route::post('/user/stats',[UserController::class, 'stat']);
+    Route::post('/user/stats/subscribers',[UserController::class, 'getSubscribers']);
+    Route::get('/user/id', [UserController::class, 'getUserId']);
+    Route::post('/user/stats/followings',[UserController::class, 'getFollowings']);
 });
 

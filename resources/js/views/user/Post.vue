@@ -120,12 +120,27 @@
       <div v-if="comments && isShowed">
         <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
           <div class="flex mb-2">
-            <router-link :to="{name: 'user.show', params: {id: comment.user.id}}" class="text-sm mr-2">{{ comment.user.name }}</router-link>
-            <p @click.prevent="setParentId(comment)" class="text-sm text-sky-500 cursor-pointer">
+            <router-link
+              :to="{ name: 'user.show', params: { id: comment.user.id } }"
+              class="text-sm mr-2"
+              >{{ comment.user.name }}</router-link
+            >
+            <p
+              @click.prevent="setParentId(comment)"
+              class="text-sm text-sky-500 cursor-pointer"
+            >
               Ответить
             </p>
           </div>
-          <p><span v-if="comment.answered_for_user" class="text-sky-400"><router-link :to="{name: 'user.show', params: {id: comment.answered_for_user.id}} ">{{ comment.answered_for_user.name }},</router-link></span> {{ comment.body }}</p>
+          <p>
+            <span v-if="comment.answered_for_user" class="text-sky-400"
+              ><router-link
+                :to="{ name: 'user.show', params: { id: comment.answered_for_user.id } }"
+                >{{ comment.answered_for_user.name }},</router-link
+              ></span
+            >
+            {{ comment.body }}
+          </p>
           <p class="mt-2 text-right text-sm">{{ comment.date }}</p>
         </div>
       </div>
@@ -194,8 +209,8 @@ export default {
     };
   },
   methods: {
-    toggleLike(post) {
-      axios.post(`/api/post/${post.id}/toggle_like`).then((res) => {
+   async toggleLike(post) {
+     await axios.post(`/api/post/${post.id}/toggle_like`).then((res) => {
         post.is_liked = res.data.is_liked;
         post.likes_count = res.data.likes_count;
       });
@@ -248,7 +263,6 @@ export default {
         this.isShowed = true;
       });
     },
-    
   },
 };
 </script>

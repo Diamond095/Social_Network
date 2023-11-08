@@ -1,7 +1,6 @@
 <template>
   <div>
       <div class="flex justify-between pb-4 pt-4 w-96 mx-auto">
-
           <router-link v-if="!token" :to="{ name: 'user.login'}">Войти</router-link>
           <router-link v-if="token" :to="{ name: 'user.personal'}">Твоя страница</router-link>
           <router-link v-if="!token" :to="{ name: 'user.registration'}">Регистрация</router-link>

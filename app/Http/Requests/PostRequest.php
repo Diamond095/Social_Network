@@ -27,4 +27,13 @@ class PostRequest extends FormRequest
             'image_id'=>'nullable|integer|exists:post_images,id'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Заголовок не должен быть пустым',
+            'content.required' => 'Текст поста не должен быть пустым',
+            'title.string' => 'Заголовок не должен быть текстом',
+            'content.string' => 'Текст поста не должен быть текстом',
+        ];
+    }
 }

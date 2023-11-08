@@ -5,7 +5,7 @@
         <input
           v-model="name"
           type="name"
-          placeholder="имя"
+          placeholder="name"
           class="w-96 p-1 mb-2 border border-inherit rounded-lg"
         />
       </div>
@@ -18,7 +18,7 @@
         <input
           v-model="email"
           type="email"
-          placeholder="электронная почта"
+          placeholder="email"
           class="w-96 p-1 mb-2 border border-inherit rounded-lg"
         />
       </div>
@@ -31,7 +31,7 @@
         <input
           v-model="password"
           type="password"
-          placeholder="пароль"
+          placeholder="password"
           class="w-96 p-1 mb-2 border border-inherit rounded-lg"
         />
       </div>
@@ -84,7 +84,7 @@ export default {
     register() {
       if (this.password != this.password_confirmation) {
         this.errors.password_confirmation = [];
-        this.errors.password_confirmation.push("Пароли не совподают");
+        this.errors.password_confirmation.push("Пароли не совпадают");
         return;
       }
       axios.get("/sanctum/csrf-cookie").then((response) => {

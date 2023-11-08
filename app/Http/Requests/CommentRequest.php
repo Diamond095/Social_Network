@@ -26,4 +26,10 @@ class CommentRequest extends FormRequest
             'parent_id'=>'nullable|integer|exists:comments,id'
         ];
     }
+    public function messages(): array
+{
+    return [
+        'body.required' => 'Комментарий не должен быть пустым',
+    ];
+}
 }
