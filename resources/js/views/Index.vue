@@ -1,5 +1,11 @@
 <template>
   <div class="w-96 mx-auto">
+    <input
+          v-model="title"
+          class="w-96 rounded-3xl border p-2 border-slate-300"
+          type="text"
+          placeholder="заголовок"
+        />
     <div v-if="users">
       <div
         class="flex justify-between items-center mb-6 pb-6 border-b border-gray-400"
@@ -18,7 +24,7 @@
         <div>
             <a @click.prevent="toggleFollowing(user)"
                        :class="['block p-2 w-32 text-center text-sm rounded-3xl', user.is_following ? 'bg-white text-sky-500 border border-sky-500' : 'bg-sky-500 text-white']" href="#">
-                        {{ user.is_following ? 'Unfollowed' : 'Follow'}}</a>
+                        {{ user.is_following ? 'Отписаться' : 'Подписаться'}}</a>
         </div>
       </div>
     </div>

@@ -31,7 +31,7 @@
       :to="{
         name: 'user.followings',
         params: {
-          id: userId,
+          id:  userId,
         },
       }"
     >
@@ -57,12 +57,12 @@ export default {
     };
   },
   methods: {
-    async getUserId() {
-      if (this.userId == -1) {
-       await  axios.get("/api/user/id").then((res) => {
+     getUserId() {
+      if (this.$route.params.id == -1) {
+        axios.get("/api/user/id").then((res) => {
           this.id = res.data.data;
         });
-        console.log(this.id);
+        
       }
     },
   },

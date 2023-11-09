@@ -87,4 +87,17 @@ class PostController extends Controller
         return CommentResource::collection($post->comments);
     }
     
+    public function deletePost(Post $post){
+        if(isset($post->likes)){
+    LikedPost::where('post_id', $post->id)->delete();
+        }
+        if(isset($post->comments)){
+            Comment::where('post_id', $post->id)->delete(); 
+        }
+        if(isset($post->image)){
+            PostImage::where('post_id', $post->id)->delete();
+        }
+    $post->delete();
+    return $post;
+    }
 }

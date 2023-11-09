@@ -32,7 +32,8 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::post('/post/{post}/repost', [PostController::class, 'repost']);
     Route::post('/post/{post}/comment', [PostController::class, 'comment']);
     Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
-    
+    Route::get('/post/delete/{post}', [PostController::class, 'deletePost']);
+
     Route::get('/feed', [UserController::class, 'feed']);
     Route::post('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
     Route::get('/users',[UserController::class, 'getUsers']);
@@ -41,5 +42,6 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::post('/user/stats/subscribers',[UserController::class, 'getSubscribers']);
     Route::get('/user/id', [UserController::class, 'getUserId']);
     Route::post('/user/stats/followings',[UserController::class, 'getFollowings']);
+    
 });
 

@@ -1,6 +1,6 @@
 <template>
   <div class="w-96 mx-auto">
-    <Stat :userId="userId" :stats="stats"></Stat>
+    <Stat :userId="'auth'" :stats="stats"></Stat>
     <div class="mb-4">
       <div class="mb-3">
         <input
@@ -63,7 +63,7 @@
     </div>
     <div v-if="posts">
       <h1 class="mb-8 pb-8 border-b border-gray-400">Твои публикации</h1>
-      <Post v-for="post in posts" :post="post"></Post>
+      <Post v-for="post in posts" :deleteStatus="true" :post="post"></Post>
     </div>
   </div>
 </template>
@@ -71,8 +71,8 @@
 <script>
 import Post from "./Post.vue";
 import Stat from "./Stat.vue";
-import { useFetch } from '@vueuse/core'
-
+import { useFetch } from "@vueuse/core";
+import axios from "axios";
 
 export default {
   name: "Personal",
@@ -85,7 +85,6 @@ export default {
       posts: [],
       errors: [],
       stats: [],
-      userId: null,
     };
   },
   async mounted() {
@@ -96,15 +95,7 @@ export default {
     Post,
     Stat,
   },
-
-  async setup() {
-  
-      const {userId} = await useFetch('/api/user/id')
-      return {
-      userId,
-    }
-
-  },
+ 
   methods: {
     selectFile() {
       this.fileInput = this.$refs.file;
@@ -163,8 +154,8 @@ export default {
       });
     },
   },
-};
 
+};
 </script>
 
 <style scoped></style>

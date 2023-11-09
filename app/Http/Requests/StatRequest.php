@@ -22,7 +22,7 @@ class StatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'=>'nullable|integer|exists:users,id'
+            'user_id'=>'nullable'
         ];
     }
 }

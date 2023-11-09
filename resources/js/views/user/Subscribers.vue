@@ -18,7 +18,7 @@
           <div>
               <a v-if="user.is_following!=null" @click.prevent="toggleFollowing(user)"
                          :class="['block p-2 w-32 text-center text-sm rounded-3xl', user.is_following ? 'bg-white text-sky-500 border border-sky-500' : 'bg-sky-500 text-white']" href="#">
-                          {{ user.is_following ? 'Unfollowed' : 'Follow'}}</a>
+                          {{ user.is_following ? 'Отписаться' : 'Подписаться'}}</a>
                           <a v-if="user.is_following==null"
                          class="block p-2 w-32 text-center text-sm rounded-3xl bg-white text-sky-500 border border-sky-500" href="#">
                           Это вы</a>

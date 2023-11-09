@@ -94,7 +94,7 @@ class UserController extends Controller
 
     public function getFollowings(StatRequest $request){
         $data = $request->validated();
-        $userId= isset($data['user_id']) ? $data['user_id'] : auth()->id();
+        $userId= $data['user_id']!='auth' ? $data['user_id'] : auth()->id();
         $users=SubscriberFollowing::where('subscriber_id', $userId)->get();
         $followings = SubscriberFollowing::where('subscriber_id', auth()->id())
         ->get('following_id')
@@ -128,7 +128,7 @@ class UserController extends Controller
     }
     public function getSubscribers(StatRequest $request){
         $data = $request->validated();
-        $userId= isset($data['user_id']) ? $data['user_id'] : auth()->id();
+        $userId= $data['user_id']!='auth' ? $data['user_id'] : auth()->id();
        
         $users=SubscriberFollowing::where('following_id', $userId)->get();
 
