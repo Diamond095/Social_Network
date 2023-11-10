@@ -17,7 +17,8 @@ class UserResource extends JsonResource
         return[
          'id'=>$this->id,
          'name'=>$this->name,
-         'is_following'=>$this->is_following 
+         'is_following'=>$this->is_following,
+         'status_notification'=>$this->status
         ];
     }
 }

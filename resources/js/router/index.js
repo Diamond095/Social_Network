@@ -35,6 +35,11 @@ const router = createRouter({
             path: '/users/stats/followings/:id', component: () => import('../views/user/Followings.vue'),
             name: 'user.followings'
         },
+        {
+            path: '/users/notification', component: () => import('../views/user/Notification.vue'),
+            name: 'user.notification'
+        },
+
 
     ]
 })

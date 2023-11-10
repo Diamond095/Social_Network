@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 mx-auto">
+  <div class="bg-gray-50 w-96 mx-auto">
     <Stat :userId="userId" :stats="stats"></Stat>
     <div v-if="posts">
       <h1 class="mb-8 pb-8 border-b border-gray-400">Публикации</h1>

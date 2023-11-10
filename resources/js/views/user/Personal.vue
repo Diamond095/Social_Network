@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 mx-auto">
+  <div class="bg-gray-50 w-96 mx-auto">
     <Stat :userId="'auth'" :stats="stats"></Stat>
     <div class="mb-4">
       <div class="mb-3">
@@ -31,7 +31,7 @@
 
       <div class="flex mb-3 items-center items-center">
         <div>
-          <input @change="storeImage" ref="file" type="file" class="hidden" />
+          <input @change="storeImage" ref="file" accept=".png, .jpeg, .jpg" type="file" class="hidden" />
           <a
             href="#"
             class="block p-2 w-32 text-center text-sm rounded-3xl bg-sky-500 text-white"
@@ -43,11 +43,6 @@
         <div v-if="image">
           <a href="#" class="ml-3" @click.prevent="image = null">Отмена</a>
         </div>
-      </div>
-      <div v-if="errors.image">
-        <p v-for="error in errors.image" class="text-sm mb-2 text-red-500">
-          {{ error }}
-        </p>
       </div>
       <div v-if="image">
         <img :src="image.url" alt="post-picture" />
@@ -71,7 +66,6 @@
 <script>
 import Post from "./Post.vue";
 import Stat from "./Stat.vue";
-import { useFetch } from "@vueuse/core";
 import axios from "axios";
 
 export default {
@@ -95,7 +89,7 @@ export default {
     Post,
     Stat,
   },
- 
+
   methods: {
     selectFile() {
       this.fileInput = this.$refs.file;
@@ -116,11 +110,6 @@ export default {
     storeImage(e) {
       let file = e.target.files[0];
       let formData = new FormData();
-      if (!file.type.startsWith("image")) {
-        this.errors.image = [];
-        this.errors.image.push("Выбранный файл должен быть изображением");
-        return;
-      }
       formData.append("image", file);
       axios.post("/api/post_image", formData).then((res) => {
         this.image = res.data.data;

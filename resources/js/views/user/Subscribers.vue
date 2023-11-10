@@ -1,5 +1,5 @@
 <template>
-    <div class="w-96 mx-auto">
+    <div class="bg-gray-50 w-96 mx-auto">
       <div v-if="users">
         <div
           class="flex justify-between items-center mb-6 pb-6 border-b border-gray-400"
@@ -27,11 +27,11 @@
       </div>
     </div>
   </template>
-  
+
   <script>
   export default {
     name: "Followings",
-  
+
     data() {
       return {
         users: [],
@@ -53,12 +53,11 @@
       },
       toggleFollowing(user) {
           axios.post(`/api/user/${user.id}/toggle_following`).then(res => {
-              user.is_following=res.data.is_following;  
+              user.is_following=res.data.is_following;
         });
       },
     },
   };
   </script>
-  
+
   <style scoped></style>
-  

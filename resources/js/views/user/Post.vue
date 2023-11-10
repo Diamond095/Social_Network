@@ -71,13 +71,14 @@
           </svg>
           <p>{{ post.reposts_count }}</p>
           <svg
+          v-if="deleteStatus==true"
             @click.prevent="toggleModal()"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6  stroke-red-500 h-6"
+            class="w-6 ml-2 stroke-red-500 h-6"
           >
             <path
               stroke-linecap="round"

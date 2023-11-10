@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->foreignId('parent_id')->index()->nullable()->constrained('comments');
+           $table->foreignId('parent_id')->index()->nullable()->constrained('comments');
         });
     }
 

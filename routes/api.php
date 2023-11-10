@@ -34,14 +34,16 @@ Route::group(['middleware'=>'auth:sanctum'], function(){
     Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
     Route::get('/post/delete/{post}', [PostController::class, 'deletePost']);
 
+
     Route::get('/feed', [UserController::class, 'feed']);
     Route::post('/user/{user}/toggle_following',[UserController::class, 'toggleFollowing']);
     Route::get('/users',[UserController::class, 'getUsers']);
     Route::get('/user/{user}/posts',[UserController::class, 'showPostOfUser']);
     Route::post('/user/stats',[UserController::class, 'stat']);
     Route::post('/user/stats/subscribers',[UserController::class, 'getSubscribers']);
-    Route::get('/user/id', [UserController::class, 'getUserId']);
     Route::post('/user/stats/followings',[UserController::class, 'getFollowings']);
-    
+    Route::get('/user/notifications/count', [UserController::class, 'getCountNotifications']);
+    Route::get('/user/notifications', [UserController::class,'getNotifications']);
+    Route::get('/user/notifications/check',[UserController::class, 'checkNotifications']);
 });
 
