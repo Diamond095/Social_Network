@@ -54,7 +54,11 @@ class UserController extends Controller
     public function toggleFollowing(User $user)
     {
         $authUser = User::find(auth()->id());
+
         $res = $authUser->followings()->toggle($user->id);
+        if(count($res['attached'])>0){
+            SubscriberFollowing::where('following_id', $user->id)->where('subscriber_id', auth()->id())->update(['created_at'=>now()]);
+        }
         $data['is_following'] = count($res['attached']) > 0 ? true : false;
         return $data;
     }
@@ -157,12 +161,13 @@ class UserController extends Controller
         $countNotificationComments = 0;
         $countNotificationLikes = 0;
         $countNotificationReposts = 0;
+        $countNotificationsSubscribes=SubscriberFollowing::where('following_id', auth()->id())->where('status_notification', 0)->count();
         foreach ($posts as $post) {
             $countNotificationLikes += $post->likes()->where('status_notification', 0)->count();
             $countNotificationComments += $post->comments()->where('status_notification', 0)->count();
             $countNotificationReposts += $post->reposts()->where('status_notification', 0)->count();
         }
-        $count = $countNotificationLikes + $countNotificationComments + $countNotificationReposts;
+        $count = $countNotificationLikes + $countNotificationComments + $countNotificationReposts + $countNotificationsSubscribes;
         return response()->json(['count' => $count]);
     }
     public function getNotifications()
@@ -175,13 +180,16 @@ class UserController extends Controller
             ->pluck('following_id')
             ->toArray();
         for ($i = 0; $i < $users->count(); $i++) {
-            $users[$i] = $users[$i]->subscriber;
+            $status=$users[$i]->status_notification;
+            $time=$users[$i]->created_at;
+            $users[$i] = $users[$i]->following;
             $notification->push(collect(
                 [
                     'user'=>$users[$i],
-                   // 'status'=> ($like->status_notification==0) ? false : true,
+                    'status'=> ($status==0) ? false : true,
+                    'title'=>null,
                     'type'=>'subscribe',
-                   // 'time'=>$like->updated_at->diffForHumans()
+                    'time'=>$time
                 ]
             ));
         }
@@ -194,7 +202,7 @@ class UserController extends Controller
                  'status'=> ($like->status_notification==0) ? false : true,
                  'title'=>$post->title,
                  'type'=>'like',
-                 'time'=>$like->updated_at->diffForHumans()
+                 'time'=>$like->updated_at
                  ]
                ));
             }
@@ -205,7 +213,7 @@ class UserController extends Controller
                   'status'=> ($comment->status_notification==0) ? false : true,
                   'title'=>$post->title,
                   'type'=>'comment',
-                  'time'=>$comment->created_at->diffForHumans()
+                  'time'=>$comment->created_at
                   ]
                 ));
              }
@@ -216,25 +224,39 @@ class UserController extends Controller
                         'status'=> ($repost->status_notification==0) ? false : true,
                         'title'=>$post->title,
                         'type'=>'repost',
-                        'time'=>$repost->created_at->diffForHumans()
+                        'time'=>$repost->created_at
                     ]
                 ));
             }
         }
-        return response()->json(['data'=>$notification]);
+       $notification=$notification->sortByDesc('time')->values();
+$notificationDiffForHumans=$notification->map(function ($item){
+    return [
+        'user'=>$item['user'],
+        'status'=> $item['status'],
+        'title'=>$item['title'],
+        'type'=>$item['type'],
+        'time'=>$item['time']->diffForHumans()
+    ];
+});
+
+        return response()->json(['data'=>$notificationDiffForHumans]);
     }
     public function checkNotifications()
     {
         $posts = Post::where('user_id', auth()->id())->get();
-        $countNotificationComments = 0;
-        $countNotificationLikes = 0;
-        $countNotificationReposts = 0;
         foreach ($posts as $post) {
             if (isset($post->likes) || isset($post->comments) || isset($post->reposts)) {
-                $countNotificationLikes += $post->likes()->where('status_notification', 0)->update(['status_notification' => 1]);
-                $countNotificationComments += $post->comments()->where('status_notification', 0)->update(['status_notification' => 1]);
-                $countNotificationReposts += $post->reposts()->where('status_notification', 0)->update(['status_notification' => 1]);
+                $post->likes()->where('status_notification', 0)->update(['status_notification' => 1]);
+                $post->comments()->where('status_notification', 0)->update(['status_notification' => 1]);
+                $post->reposts()->where('status_notification', 0)->update(['status_notification' => 1]);
             }
         }
+        $followings=SubscriberFollowing::where('following_id', auth()->id())->get();
+
+        foreach($followings as $following){
+            $following->where('status_notification', 0)->update(['status_notification'=>1]);
+        }
+
     }
 }

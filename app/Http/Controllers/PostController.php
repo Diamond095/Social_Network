@@ -68,7 +68,7 @@ class PostController extends Controller
     }
     public function repost(RepostRequest $request, Post $post)
     {
-      //  $data = $request->validated();
+        $data=$request->validated();
         $data['user_id'] = auth()->id();
         $data['reposted_id'] = $post->id;
         Post::create($data);
@@ -86,13 +86,13 @@ class PostController extends Controller
     {
         return CommentResource::collection($post->comments);
     }
-    
+
     public function deletePost(Post $post){
         if(isset($post->likes)){
     LikedPost::where('post_id', $post->id)->delete();
         }
         if(isset($post->comments)){
-            Comment::where('post_id', $post->id)->delete(); 
+            Comment::where('post_id', $post->id)->delete();
         }
         if(isset($post->image)){
             PostImage::where('post_id', $post->id)->delete();
